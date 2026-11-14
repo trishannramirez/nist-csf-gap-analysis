@@ -19,7 +19,7 @@ Govern is the weakest function and accounts for the largest share of total prior
 | GV.RR Roles, Responsibilities, and Authorities | 2.25 → 3.00 | 🟢 | Leadership is supportive and HR practices include security, but there is no board reporting and no RACI outside the security team. |
 | GV.PO Policy | 1.50 → 3.00 | 🟠 | Core policy exists but is outdated (2023) and incomplete. |
 | GV.OV Oversight | 1.00 → 3.00 | 🔴 | No KPIs, KRIs, or periodic strategy reviews. |
-| GV.SC Supply Chain Risk Management | 0.60 → 2.80 | 🔴 | **Largest gap in the assessment.** No TPRM program, vendor inventory, due diligence, contract security clauses, or monitoring. |
+| GV.SC Supply Chain Risk Management | 0.60 → 2.80 | 🔴 | **Largest gap in the assessment.** No TPRM (Third-Party Risk Management) program, vendor inventory, due diligence, contract security clauses, or monitoring. |
 
 **Key risk:** Without a risk appetite and a vendor risk program, Bluefin cannot answer the questions that are blocking its large customer deals.
 
