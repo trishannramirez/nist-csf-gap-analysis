@@ -1,0 +1,16 @@
+Subcategory_ID,Category,Current_Maturity,Target_Maturity,Gap,Business_Priority,Priority_Score,Recommendation,Owner
+GV.RM-02,Risk Management Strategy,0,3,3,High,9,Draft a risk appetite statement with measurable tolerances; approve with the executive team and board.,CEO / CISO
+GV.SC-01,Cybersecurity Supply Chain Risk Management,0,3,3,High,9,"Establish a TPRM program charter, policy, and process.",GRC / Procurement
+ID.AM-07,Asset Management,1,4,3,High,9,Run data discovery and maintain a PHI/PII data inventory.,Security Engineering / Privacy
+ID.IM-04,Improvement,1,4,3,High,9,Update the IR plan to NIST SP 800-61 Rev. 3 and test it through a tabletop exercise.,Security Ops
+GV.SC-03,Cybersecurity Supply Chain Risk Management,0,3,3,Medium,6,Feed vendor assessment results into the central risk register.,GRC
+GV.SC-07,Cybersecurity Supply Chain Risk Management,0,3,3,Medium,6,Reassess critical vendors annually and track SOC 2 report renewals.,GRC
+GV.OC-03,Organizational Context,2,4,2,High,6,"Build an obligations register (HIPAA Security Rule, state breach laws, BAAs, customer SOC 2 commitments) mapped to controls and owners.",Legal / GRC
+GV.RM-01,Risk Management Strategy,1,3,2,High,6,Define risk management objectives and obtain executive sign-off.,CISO
+GV.RM-06,Risk Management Strategy,1,3,2,High,6,Adopt a standard 5x5 likelihood/impact scoring method and a central risk register.,GRC
+GV.SC-04,Cybersecurity Supply Chain Risk Management,1,3,2,High,6,Build a vendor inventory and tier vendors (critical/high/medium/low) by data access and business impact.,Procurement
+GV.SC-05,Cybersecurity Supply Chain Risk Management,1,3,2,High,6,"Add security requirements (breach notification timelines, audit rights, SOC 2 report) to contract templates.",Legal
+GV.SC-06,Cybersecurity Supply Chain Risk Management,1,3,2,High,6,Require a security questionnaire and SOC 2 review before onboarding critical and high-tier vendors.,GRC
+ID.AM-05,Asset Management,1,3,2,High,6,Classify assets by data sensitivity and criticality and link them to the BIA.,GRC
+ID.RA-05,Risk Assessment,1,3,2,High,6,Perform an annual enterprise cyber risk assessment following NIST SP 800-30.,GRC
+ID.RA-10,Risk Assessment,1,3,2,High,6,Require a security assessment before contract signature (see GV.SC-06).,GRC

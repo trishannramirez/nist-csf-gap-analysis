@@ -1,0 +1,23 @@
+Category_ID,Category,Subcategories,Avg_Current,Avg_Target,Total_Priority_Score,Phase_1_Items,Avg_Gap
+GV.OC,Organizational Context,5,2.0,3.2,14,1,1.2
+GV.RM,Risk Management Strategy,7,1.0,2.86,32,3,1.86
+GV.RR,"Roles, Responsibilities, and Authorities",4,2.25,3.0,7,0,0.75
+GV.PO,Policy,2,1.5,3.0,7,0,1.5
+GV.OV,Oversight,3,1.0,3.0,12,0,2.0
+GV.SC,Cybersecurity Supply Chain Risk Management,10,0.6,2.8,50,6,2.2
+ID.AM,Asset Management,7,1.57,3.14,28,2,1.57
+ID.RA,Risk Assessment,10,1.6,3.1,33,2,1.5
+ID.IM,Improvement,4,1.25,3.25,18,1,2.0
+PR.AA,"Identity Management, Authentication, and Access Control",6,3.0,3.5,9,1,0.5
+PR.AT,Awareness and Training,2,2.0,3.0,4,0,1.0
+PR.DS,Data Security,4,3.0,3.75,8,0,0.75
+PR.PS,Platform Security,6,2.17,3.0,13,0,0.83
+PR.IR,Technology Infrastructure Resilience,4,3.25,3.25,0,0,0.0
+DE.CM,Continuous Monitoring,5,1.4,2.6,14,0,1.2
+DE.AE,Adverse Event Analysis,6,1.17,2.83,23,2,1.67
+RS.MA,Incident Management,5,1.2,3.0,20,1,1.8
+RS.AN,Incident Analysis,4,1.25,3.0,14,0,1.75
+RS.CO,Incident Response Reporting and Communication,2,1.5,3.5,10,1,2.0
+RS.MI,Incident Mitigation,2,2.0,3.0,5,0,1.0
+RC.RP,Incident Recovery Plan Execution,6,1.33,2.83,21,2,1.5
+RC.CO,Incident Recovery Communication,2,1.0,3.0,8,0,2.0

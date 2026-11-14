@@ -1,0 +1,7 @@
+Function,Subcategories,Avg_Current,Avg_Target,Total_Priority_Score,Phase_1_Items,Avg_Gap
+Govern,31,1.23,2.94,122,10,1.71
+Identify,21,1.52,3.14,79,5,1.62
+Protect,22,2.73,3.32,34,1,0.59
+Detect,11,1.27,2.73,37,2,1.45
+Respond,13,1.38,3.08,49,2,1.69
+Recover,8,1.25,2.88,29,2,1.62
