@@ -29,7 +29,7 @@ A complete cybersecurity maturity gap assessment of a fictional healthcare SaaS 
 ├── data/
 │   └── csf2_assessment.csv        # Source data: 106 subcategories, scored, with evidence and recommendations
 ├── docs/
-│   ├── 01-company-profile.md      # Fictional company, tech stack, scope
+│   ├── 01-company-profile.md      # Fictional company (Bluefin Health Analytics), tech stack, scope
 │   ├── 02-methodology.md          # Maturity scale, target-setting, prioritization formula
 │   ├── 03-executive-summary.md    # Board-ready summary and decisions requested
 │   ├── 04-detailed-findings.md    # Findings by function and category, top 15 gaps
@@ -62,7 +62,7 @@ A complete cybersecurity maturity gap assessment of a fictional healthcare SaaS 
 2. **Current Profile:** each subcategory scored on a 0–5 maturity scale (Not Performed → Optimized).
 3. **Target Profile:** risk-based targets, mostly level 3 (Defined), with level 4 for PHI-critical outcomes.
 4. **Prioritization:** `Priority Score = (Target − Current) × Business Priority weight (High 3 / Medium 2 / Low 1)`
-5. **Roadmap:** score ≥ 6 → Phase 1 (0–90 days); 3–5 → Phase 2 (3–6 months); 1–2 → Phase 3 (6–12 months).
+5. **Roadmap:** score >= 6 -> Phase 1 (0–90 days); 3–5 -> Phase 2 (3–6 months); 1–2 -> Phase 3 (6–12 months).
 
 ![Maturity gap by category](outputs/category_gaps.png)
 
