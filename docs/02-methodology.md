@@ -59,7 +59,7 @@ Business priority reflects PHI exposure, regulatory requirements, customer contr
 ## 5. Tooling
 
 - `data/csf2_assessment.csv` – the scored assessment (one row per subcategory).
-- `scripts/analyze.py` – validates the data (106 unique subcategories, scores in range, target ≥ current), calculates gaps, priority scores, and phases, and produces the summary tables and charts in `outputs/`.
+- `scripts/analyze.py` – validates the data (106 unique subcategories, scores in range, target >= current), calculates gaps, priority scores, and phases, and produces the summary tables and charts in `outputs/`.
 
 ## 6. Limitations
 
