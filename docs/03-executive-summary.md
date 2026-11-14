@@ -1,7 +1,7 @@
 # 03 – Executive Summary
 
 **To:** CEO, CTO, and Board of Directors, Bluefin Health Analytics (fictional)
-**From:** GRC Analyst
+**From:** Trish Ramirez (GRC Analyst)
 **Subject:** NIST CSF 2.0 Cybersecurity Maturity Gap Assessment
 
 ---
@@ -29,7 +29,7 @@ We recommend approving a **12-month remediation roadmap**, starting with **22 hi
 
 1. **There is no risk management foundation (GV.RM).** Bluefin has no risk appetite statement, no standard scoring method, and no risk register. Without these, security spending and risk acceptance decisions are made ad hoc.
 2. **Third-party risk is unmanaged (GV.SC, average 0.6).** About 140 SaaS vendors are in use, with no inventory, tiering, due diligence, or monitoring. Large health-system customers ask about this first, and it is a leading cause of healthcare breaches.
-3. **We don't know where all our PHI is (ID.AM-07).** Without a data inventory, we cannot fully protect PHI, scope a SOC 2 audit, or estimate the impact of a breach.
+3. **We don't know where all PHI is (ID.AM-07).** Without a data inventory, we cannot fully protect PHI, scope a SOC 2 audit, or estimate the impact of a breach.
 4. **Incident response is untested (ID.IM-04, RS.MA, RS.CO).** The 2023 IR plan has never been exercised. There are no incident criteria, severity levels, or notification templates, so meeting HIPAA's breach notification deadlines would be at risk.
 5. **Recovery depends on individual knowledge (RC.RP).** Backups are automated but are not immutable and are not verified before restoration. This is a critical weakness against ransomware.
 6. **Privileged access is too broad (PR.AA-05).** Twelve engineers have standing AWS admin access and access is never reviewed.
