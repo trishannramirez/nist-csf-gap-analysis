@@ -8,7 +8,7 @@
 |---|---|
 | Industry | Healthcare technology (B2B SaaS) |
 | Product | A cloud platform that helps mid-sized hospitals and clinic groups analyze patient flow, readmission risk, and staffing |
-| Employees | 220 (Engineering 85, Sales and Customer Success 60, G&A 45, Product 30) |
+| Employees | 220 (Engineering = 85, Sales and Customer Success = 60, G&A (General and Administrative) = 45, Product = 30) |
 | Funding stage | Series C |
 | Customers | ~140 hospitals and clinic groups in the United States |
 | Data handled | Protected Health Information (PHI) from customer EHR integrations, customer employee data, and internal employee PII |
