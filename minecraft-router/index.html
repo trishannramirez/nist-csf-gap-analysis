@@ -244,7 +244,7 @@ function draw(res, start, end, portals) {
   }
   const dot = (p, color, label, r = 7) => { const [x, y] = P(p); g.fillStyle = color; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
     g.fillStyle = css('--text'); g.font = '13px system-ui'; g.textAlign = x > W - 90 ? 'right' : 'left'; g.fillText(label, x + (x > W - 90 ? -10 : 10), y - 10); };
-  for (const s of res.steps) if (s.kind !== 'travel') dot(toOW(s.from.dim === 'ow' ? s.from : s.to), css('--accent'), 'Portal', 6);
+  for (const s of res.steps) if (s.kind !== 'travel') dot(toOW(s.from.dim === 'ow' ? s.from : s.to), css('--accent'), '', 6);
   dot(start, css('--text'), 'You'); dot(end, css('--text'), 'Goal');
 }
 
