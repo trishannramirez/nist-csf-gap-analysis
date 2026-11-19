@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nether Route Planner</title>
+<style>
+  :root { --bg:#1b1b1f; --panel:#26262c; --text:#e8e8ea; --muted:#9a9aa5; --line:#3a3a44;
+          --ow:#5fd35f; --ne:#ff6b4a; --accent:#7aa2ff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f4f4f6; --panel:#fff; --text:#1d1d22; --muted:#666672; --line:#d8d8e0; --ow:#2e9e2e; --ne:#d9482a; --accent:#2b5fd9; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.45 system-ui,sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:20px 16px 40px; display:grid; gap:16px; grid-template-columns:minmax(0,380px) minmax(0,1fr); }
+  @media (max-width:820px) { main { grid-template-columns:1fr; } }
+  h1 { grid-column:1/-1; margin:0; font-size:22px; }
+  h1 small { color:var(--muted); font-weight:400; font-size:14px; margin-left:8px; }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  h2 { margin:0 0 10px; font-size:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  label { display:block; font-size:13px; color:var(--muted); margin:8px 0 3px; }
+  input, select, button { font:inherit; color:var(--text); background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:6px 8px; }
+  input[type=number] { width:100%; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .row3 { display:grid; grid-template-columns:90px 1fr 1fr 32px; gap:6px; margin-bottom:6px; }
+  button { cursor:pointer; } button.primary { background:var(--accent); color:#fff; border-color:var(--accent); width:100%; margin-top:12px; padding:9px; font-weight:600; }
+  .check { display:flex; gap:8px; align-items:center; margin-top:10px; color:var(--text); font-size:14px; }
+  .stack { display:grid; gap:16px; align-content:start; }
+  .big { font-size:26px; font-weight:700; } .good { color:var(--ow); } .bad { color:var(--ne); }
+  .cmp { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:12px; }
+  .cmp div span { display:block; font-size:12px; color:var(--muted); }
+  ol { margin:0; padding-left:20px; } li { margin-bottom:6px; }
+  .tag { font-size:11px; padding:1px 6px; border-radius:99px; border:1px solid currentColor; margin-right:4px; }
+  .tag.ow { color:var(--ow); } .tag.ne { color:var(--ne); } .tag.pt { color:var(--accent); }
+  canvas { width:100%; height:340px; display:block; border-radius:6px; background:var(--bg); }
+  .hint { font-size:12px; color:var(--muted); margin-top:8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Nether Route Planner <small>fastest path between two points using Nether portals (1:8)</small></h1>
+
+  <div class="stack">
+    <section>
+      <h2>Points (Overworld X / Z)</h2>
+      <div class="row"><div><label>Start X</label><input id="sx" type="number" value="0"></div><div><label>Start Z</label><input id="sz" type="number" value="0"></div></div>
+      <div class="row"><div><label>Destination X</label><input id="ex" type="number" value="8000"></div><div><label>Destination Z</label><input id="ez" type="number" value="-3000"></div></div>
+    </section>
+
+    <section>
+      <h2>Travel &amp; portals</h2>
+      <label>Overworld travel</label><select id="owMode"></select>
+      <label>Nether travel</label><select id="neMode"></select>
+      <div class="row"><div><label>Portal wait (s)</label><input id="wait" type="number" value="4" min="0"></div>
+      <div><label>Build portal (s)</label><input id="build" type="number" value="60" min="0"></div></div>
+      <label class="check"><input id="allowBuild" type="checkbox" checked> Allow building new portals at start &amp; destination</label>
+    </section>
+
+    <section>
+      <h2>Existing portals</h2>
+      <div id="portals"></div>
+      <button id="addPortal" type="button">+ Add portal</button>
+      <div class="hint">Coordinates in the dimension you pick. The linked portal in the other dimension is assumed to exist.</div>
+    </section>
+
+    <button class="primary" id="go">Find fastest route</button>
+  </div>
+
+  <div class="stack">
+    <section><h2>Result</h2><div id="result"></div></section>
+    <section><h2>Map (Overworld coordinates)</h2><canvas id="map"></canvas>
+      <div class="hint"><span class="tag ow">Overworld</span><span class="tag ne">Nether (shown ×8)</span><span class="tag pt">Portal</span></div></section>
+  </div>
+</main>
+<script src="router.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const { SPEEDS, planRoute, fmtTime, NETHER_SCALE } = MCRouter;
+
+for (const sel of [$('owMode'), $('neMode')])
+  for (const [k, v] of Object.entries(SPEEDS)) sel.add(new Option(`${v.label} (${v.bps} b/s)`, k));
+$('owMode').value = 'sprint'; $('neMode').value = 'sprint';
+
+function addPortal(p = { dim: 'ow', x: '', z: '' }) {
+  const row = document.createElement('div'); row.className = 'row3';
+  row.innerHTML = `<select><option value="ow">Overworld</option><option value="ne">Nether</option></select>
+    <input type="number" placeholder="X"><input type="number" placeholder="Z"><button type="button" title="Remove">×</button>`;
+  row.children[0].value = p.dim; row.children[1].value = p.x; row.children[2].value = p.z;
+  row.children[3].onclick = () => row.remove();
+  $('portals').appendChild(row);
+}
+$('addPortal').onclick = () => addPortal();
+
+const num = id => parseFloat($(id).value) || 0;
+const f = v => Math.round(v).toLocaleString();
+
+function run() {
+  const portals = [...$('portals').children].map(r => ({ dim: r.children[0].value, x: parseFloat(r.children[1].value), z: parseFloat(r.children[2].value) }))
+    .filter(p => isFinite(p.x) && isFinite(p.z));
+  const start = { x: num('sx'), z: num('sz') }, end = { x: num('ex'), z: num('ez') };
+  const res = planRoute({ start, end, portals, owSpeed: SPEEDS[$('owMode').value].bps, neSpeed: SPEEDS[$('neMode').value].bps,
+    portalWait: num('wait'), buildTime: num('build'), allowBuild: $('allowBuild').checked });
+
+  const steps = res.steps.map(s => {
+    const owIn = s.from.dim === 'ow', pt = s.kind !== 'travel';
+    if (s.kind === 'travel') {
+      const nat = s => `${f(s.x)}, ${f(s.z)}`;
+      return `<li><span class="tag ${owIn ? 'ow' : 'ne'}">${owIn ? 'Overworld' : 'Nether'}</span>Go ${f(s.dist)} blocks from (${nat(s.from)}) to (${nat(s.to)}) — ${fmtTime(s.cost)}</li>`;
+    }
+    const where = s.from.dim === 'ow' ? s.from : s.to, ne = s.from.dim === 'ne' ? s.from : s.to;
+    const text = s.kind === 'build'
+      ? (s.from.id === 'A' || s.to.id === 'A' ? `Build a portal at Overworld (${f(where.x)}, ${f(where.z)})` : `Build a portal at Nether (${f(ne.x)}, ${f(ne.z)}) and step through`)
+      : `${s.note}`;
+    const dir = s.from.dim === 'ow' ? '→ Nether' : '→ Overworld';
+    return `<li><span class="tag pt">Portal</span>${text} ${s.kind === 'build' ? '' : ''}(${dir}) — ${fmtTime(s.cost)}</li>`;
+  }).join('');
+
+  $('result').innerHTML = `
+    <div class="cmp">
+      <div><span>Best route</span><div class="big good">${fmtTime(res.time)}</div></div>
+      <div><span>Overworld only</span><div class="big">${fmtTime(res.directTime)}</div></div>
+      <div><span>${res.saved > 0.5 ? 'Time saved' : 'Verdict'}</span><div class="big ${res.saved > 0.5 ? 'good' : 'bad'}">${res.saved > 0.5 ? fmtTime(res.saved) : 'Just walk'}</div></div>
+    </div>
+    <div style="color:var(--muted);margin-bottom:8px">Straight-line distance: ${f(res.directDist)} blocks</div>
+    <ol>${steps || '<li>Travel directly — portals do not pay off here.</li>'}</ol>
+    ${res.usesNether ? '<div class="hint">When building near the destination, the linked Overworld portal generates within a few blocks of the target; expect a short walk at the end. Check your Nether coordinates are valid (Y 0–127, away from lava lakes).</div>' : ''}`;
+  draw(res, start, end, portals);
+}
+
+function draw(res, start, end, portals) {
+  const c = $('map'), dpr = window.devicePixelRatio || 1;
+  const W = c.clientWidth, H = c.clientHeight; c.width = W * dpr; c.height = H * dpr;
+  const g = c.getContext('2d'); g.scale(dpr, dpr);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n);
+  const pts = [start, end];
+  const toOW = n => n.dim === 'ne' ? { x: n.x * NETHER_SCALE, z: n.z * NETHER_SCALE } : n;
+  res.steps.forEach(s => { pts.push(toOW(s.from), toOW(s.to)); });
+  portals.forEach(p => pts.push(toOW(p)));
+  const xs = pts.map(p => p.x), zs = pts.map(p => p.z);
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minZ = Math.min(...zs), maxZ = Math.max(...zs);
+  const pad = 36, span = Math.max(maxX - minX, maxZ - minZ, 1);
+  const k = Math.min((W - 2 * pad) / span, (H - 2 * pad) / span);
+  const ox = (W - (maxX - minX) * k) / 2, oz = (H - (maxZ - minZ) * k) / 2;
+  const P = p => [ox + (p.x - minX) * k, oz + (p.z - minZ) * k]; // +X right, +Z down (like Minecraft's map)
+
+  g.clearRect(0, 0, W, H);
+  g.strokeStyle = css('--line'); g.setLineDash([4, 4]); g.beginPath(); g.moveTo(...P(start)); g.lineTo(...P(end)); g.stroke(); g.setLineDash([]);
+  g.lineWidth = 3;
+  for (const s of res.steps) {
+    if (s.kind !== 'travel') continue;
+    g.strokeStyle = css(s.from.dim === 'ow' ? '--ow' : '--ne');
+    g.beginPath(); g.moveTo(...P(toOW(s.from))); g.lineTo(...P(toOW(s.to))); g.stroke();
+  }
+  const dot = (p, color, label, r = 6) => { const [x, y] = P(p); g.fillStyle = color; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+    g.fillStyle = css('--text'); g.font = '12px system-ui'; g.fillText(label, x + 9, y - 8); };
+  for (const s of res.steps) if (s.kind !== 'travel') dot(toOW(s.from.dim === 'ow' ? s.from : s.to), css('--accent'), 'Portal', 5);
+  dot(start, css('--text'), `Start (${f(start.x)}, ${f(start.z)})`); dot(end, css('--text'), `End (${f(end.x)}, ${f(end.z)})`);
+}
+
+$('go').onclick = run; window.addEventListener('resize', run);
+document.querySelectorAll('input,select').forEach(e => e.addEventListener('change', run));
+run();
+</script>
+</body>
+</html>
